@@ -3,6 +3,12 @@ package org.dieschnittstelle.ess.basics;
 
 import org.dieschnittstelle.ess.basics.annotations.AnnotatedStockItemBuilder;
 import org.dieschnittstelle.ess.basics.annotations.StockItemProxyImpl;
+import org.dieschnittstelle.ess.basics.reflection.ReflectedStockItemBuilder;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import static org.dieschnittstelle.ess.utils.Utils.*;
 
@@ -37,6 +43,21 @@ public class ShowAnnotations {
 		//  will then be built from the field names and field values.
 		//  Note that only read-access to fields via getters or direct access
 		//  is required here.
+
+		String className = instance.getClass().getSimpleName();
+		String attributesString = Arrays.stream(instance.getClass().getDeclaredFields()).map( field -> {
+			String name = field.getName();
+			String getterName = ReflectedStockItemBuilder.getAccessorNameForField("get", name);
+			try {
+				Method getter = instance.getClass().getDeclaredMethod(getterName);
+				String value = getter.invoke(instance).toString();
+				return name + ":" + value + ", ";
+			} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		}).reduce("",  String::concat);
+
+		show("{%s %s}", className, attributesString.substring(0, attributesString.length() - 2));
 
 		// TODO BAS3: if the new @DisplayAs annotation is present on a field,
 		//  the string representation will not use the field's name, but the name
