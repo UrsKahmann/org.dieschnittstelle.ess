@@ -2,6 +2,7 @@ package org.dieschnittstelle.ess.basics;
 
 
 import org.dieschnittstelle.ess.basics.annotations.AnnotatedStockItemBuilder;
+import org.dieschnittstelle.ess.basics.annotations.DisplayAs;
 import org.dieschnittstelle.ess.basics.annotations.StockItemProxyImpl;
 import org.dieschnittstelle.ess.basics.reflection.ReflectedStockItemBuilder;
 
@@ -46,12 +47,19 @@ public class ShowAnnotations {
 
 		String className = instance.getClass().getSimpleName();
 		String attributesString = Arrays.stream(instance.getClass().getDeclaredFields()).map( field -> {
-			String name = field.getName();
-			String getterName = ReflectedStockItemBuilder.getAccessorNameForField("get", name);
+			String fieldName = field.getName();
+			String displayName = fieldName;
+			DisplayAs displayAsAnnotation = field.getAnnotation(DisplayAs.class);
+
+			if (displayAsAnnotation != null) {
+				displayName = displayAsAnnotation.value();
+			}
+
+			String getterName = ReflectedStockItemBuilder.getAccessorNameForField("get", fieldName);
 			try {
 				Method getter = instance.getClass().getDeclaredMethod(getterName);
 				String value = getter.invoke(instance).toString();
-				return name + ":" + value + ", ";
+				return displayName + ":" + value + ", ";
 			} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
