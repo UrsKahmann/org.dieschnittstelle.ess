@@ -96,5 +96,31 @@ public class TouchpointServiceServlet extends HttpServlet {
 	 * TODO: SER4 server-side implementation of deleteTouchpoint
 	 */
 
+	@Override
+	protected void doDelete(HttpServletRequest request,
+						  HttpServletResponse response) {
+
+		// obtain the executor for reading out the touchpoints from the servlet context using the touchpointCRUD attribute
+		TouchpointCRUDExecutor exec = (TouchpointCRUDExecutor) getServletContext().getAttribute("touchpointCRUD");
+
+		try {
+
+			// Check if the URL contains an ID (e.g. /api/touchpoints/<ID>) to
+			// identify the touchpoint that should be deleted
+			Long touchpointID = Long.parseLong(request.getPathInfo().substring(1));
+
+			// Delete touchpoint in DB
+			exec.deleteTouchpoint(touchpointID);
+
+			// set the response status as successful, using the appropriate
+			// constant from HttpServletResponse
+			response.setStatus(HttpServletResponse.SC_OK);
+
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			throw new RuntimeException(e);
+		}
+
+	}
 
 }
