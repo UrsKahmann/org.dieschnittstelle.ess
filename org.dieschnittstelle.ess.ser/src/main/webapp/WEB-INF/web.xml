@@ -31,15 +31,6 @@
 		<filter-name>TouchpointGUIServletFilter</filter-name>
 		<servlet-name>TouchpointGUIServlet</servlet-name>
 	</filter-mapping>
-	<!--  the filter that blocks access to api servlet for browsers -->
-	<filter>
-		<filter-name>TouchpointServiceServletFilter</filter-name>
-		<filter-class>org.dieschnittstelle.ess.ser.TouchpointServiceServletFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>TouchpointServiceServletFilter</filter-name>
-		<servlet-name>TouchpointServiceServlet</servlet-name>
-	</filter-mapping>
 	<!-- the servlet handles requests from guis -->
 	<servlet>
 		<description></description>
