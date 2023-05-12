@@ -53,7 +53,7 @@ public class ProductCRUDRESTClient {
 	}
 
 	public AbstractProduct updateProduct(AbstractProduct update) {
-		return serviceProxy.updateProduct(update);
+		return serviceProxy.updateProduct(update.getId(), update);
 	}
 
 	public boolean deleteProduct(long id) {

@@ -32,7 +32,7 @@ public class ProductCRUDServiceImpl implements IProductCRUDService {
 	}
 
 	@Override
-	public AbstractProduct updateProduct(AbstractProduct update) {
+	public AbstractProduct updateProduct(long id, AbstractProduct update) {
 		return productCRUD.updateObject(update);
 	}
 

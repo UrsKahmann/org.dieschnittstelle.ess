@@ -60,7 +60,7 @@ public class ProductCRUDServiceOPIImpl {
 
 	public IndividualisedProductItem updateProduct(
 			IndividualisedProductItem update) {
-		return (IndividualisedProductItem)this.service.updateProduct(update);
+		return (IndividualisedProductItem)this.service.updateProduct(update.getId(), update);
 	}
 
 	public boolean deleteProduct(long id) {
@@ -71,5 +71,5 @@ public class ProductCRUDServiceOPIImpl {
 		IndividualisedProductItem item = (IndividualisedProductItem)this.service.readProduct(id);
 		return item;
 	}
-	
+
 }
