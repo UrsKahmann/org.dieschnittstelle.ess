@@ -17,7 +17,7 @@ package org.dieschnittstelle.ess.opi.client;
 //import java.util.List;
 
 public class ShowOpenAPIRestServiceClient {
-
+//
 //	protected static Logger logger = org.apache.logging.log4j.LogManager
 //			.getLogger(ShowOpenAPIRestServiceClient.class);
 //
@@ -54,13 +54,13 @@ public class ShowOpenAPIRestServiceClient {
 //		address.setStreet("Luxemburger Str.");
 //		address.setZipCode("13353");
 //		address.setHouseNr("10");
-//		address.setGeoLat(0);
-//		address.setGeoLong(0);
-//		address.setId(0);
-//		newTouchpoint.setErpPointOfSaleId(0);
+//		address.setGeoLat(0L);
+//		address.setGeoLong(0L);
+//		address.setId(0L);
+//		newTouchpoint.setErpPointOfSaleId(0L);
 //		newTouchpoint.setAddress(address);
 //		newTouchpoint.setName("BHT OpenAPI Touchpoint");
-//		newTouchpoint.setId(0);
+//		newTouchpoint.setId(0L);
 //
 //		// create
 //		StationaryTouchpoint tpp = serviceProxy.createTouchpoint(newTouchpoint);
