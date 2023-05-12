@@ -33,7 +33,8 @@ public interface IProductCRUDService {
 	public List<AbstractProduct> readAllProducts();
 
 	@PUT
-	public AbstractProduct updateProduct(long id, AbstractProduct update);
+	@Path("/{productId}")
+	public AbstractProduct updateProduct(@PathParam("productId") long id, AbstractProduct update);
 
 	@DELETE
 	@Path("/{productId}")
