@@ -58,9 +58,9 @@ public class ProductCRUDServiceOPIImpl {
 				.collect(Collectors.toList());
 	}
 
-	public IndividualisedProductItem updateProduct(long id,
+	public IndividualisedProductItem updateProduct(
 			IndividualisedProductItem update) {
-		return (IndividualisedProductItem)this.service.updateProduct(id,update);
+		return (IndividualisedProductItem)this.service.updateProduct(update);
 	}
 
 	public boolean deleteProduct(long id) {
