@@ -4,6 +4,93 @@ info:
   title: "WebAPI for JRS, OPI and WSV exercises"
   version: "0.1"
 paths:
+  /api/opi/products:
+    get:
+      operationId: readAllProducts
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IndividualisedProductItem'
+    put:
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndividualisedProductItem'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndividualisedProductItem'
+    post:
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndividualisedProductItem'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndividualisedProductItem'
+    delete:
+      operationId: deleteProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              format: int64
+              type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /api/opi/products/campaigns:
+    post:
+      operationId: createCampaign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /api/opi/products/{id}:
+    get:
+      operationId: readProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndividualisedProductItem'
   /api/opi/touchpoints:
     get:
       operationId: readAllTouchpoints
@@ -63,6 +150,81 @@ paths:
             application/json:
               schema:
                 type: boolean
+  /api/products:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AbstractProduct'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbstractProduct'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbstractProduct'
+  /api/products/{productId}:
+    get:
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbstractProduct'
+    put:
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbstractProduct'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbstractProduct'
+    delete:
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
   /api/touchpoints:
     get:
       responses:
@@ -74,6 +236,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StationaryTouchpoint'
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationaryTouchpoint'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationaryTouchpoint'
     post:
       requestBody:
         content:
@@ -120,6 +295,17 @@ paths:
                 type: boolean
 components:
   schemas:
+    AbstractProduct:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        price:
+          format: int32
+          type: integer
     AbstractTouchpoint:
       type: object
       properties:
@@ -151,6 +337,54 @@ components:
           type: string
         city:
           type: string
+    Campaign:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        price:
+          format: int32
+          type: integer
+        bundles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductBundle'
+    IndividualisedProductItem:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        price:
+          format: int32
+          type: integer
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        expirationAfterStocked:
+          format: int32
+          type: integer
+    ProductBundle:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        product:
+          $ref: '#/components/schemas/IndividualisedProductItem'
+        units:
+          format: int32
+          type: integer
+    ProductType:
+      enum:
+      - BREAD
+      - ROLL
+      - PASTRY
+      type: string
     StationaryTouchpoint:
       type: object
       properties:
