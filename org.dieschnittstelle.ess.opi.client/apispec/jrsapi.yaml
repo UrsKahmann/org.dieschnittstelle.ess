@@ -44,21 +44,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IndividualisedProductItem'
-    delete:
-      operationId: deleteProduct
-      requestBody:
-        content:
-          application/json:
-            schema:
-              format: int64
-              type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/opi/products/campaigns:
     post:
       operationId: createCampaign
@@ -91,6 +76,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IndividualisedProductItem'
+    delete:
+      operationId: deleteProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
   /api/opi/touchpoints:
     get:
       operationId: readAllTouchpoints

@@ -81,8 +81,9 @@ public class ProductCRUDServiceOPIImpl {
 	}
 
 	@DELETE
+	@Path("/{id}")
 	@Operation(operationId = "deleteProduct")
-	public boolean deleteProduct(long id) {
+	public boolean deleteProduct(@PathParam("id") long id) {
 		return this.service.deleteProduct(id);
 	}
 

@@ -28,7 +28,8 @@ public class ProductCRUDOpenAPIClient {
 		//  Sie, dass bei der JSON Verarbeitung unbekannte Attribute ignoriert werden sollen.
 		JacksonJsonProvider provider = new JacksonJsonProvider();
 		provider.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		List providers = new ArrayList();
+
+		List<JacksonJsonProvider> providers = new ArrayList<>();
 		providers.add(provider);
 
 		serviceProxy = JAXRSClientFactory.create("http://localhost:8080", DefaultApi.class, providers);
