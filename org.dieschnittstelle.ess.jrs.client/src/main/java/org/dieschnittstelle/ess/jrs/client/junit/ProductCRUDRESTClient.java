@@ -19,8 +19,7 @@ public class ProductCRUDRESTClient {
 	
 	protected static Logger logger = org.apache.logging.log4j.LogManager.getLogger(ProductCRUDRESTClient.class);
 
-	public ProductCRUDRESTClient() throws Exception {
-
+	public ProductCRUDRESTClient() {
 
 		/*
 		 * TODO: JRS2: create a client for the web service using ResteasyClientBuilder and ResteasyWebTarget

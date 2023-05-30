@@ -3,9 +3,7 @@ package org.dieschnittstelle.ess.jrs;
 import jakarta.servlet.ServletContext;
 import jakarta.ws.rs.core.Context;
 import org.dieschnittstelle.ess.entities.GenericCRUDExecutor;
-import org.dieschnittstelle.ess.entities.crm.StationaryTouchpoint;
 import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
-import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 
 import java.util.List;
 
@@ -17,6 +15,7 @@ public class ProductCRUDServiceImpl implements IProductCRUDService {
 
 	private GenericCRUDExecutor<AbstractProduct> productCRUD;
 	public ProductCRUDServiceImpl(@Context ServletContext servletContext) {
+		// read out the dataAccessor
 		this.productCRUD = (GenericCRUDExecutor<AbstractProduct>) servletContext.getAttribute("productCRUD");
 	}
 
