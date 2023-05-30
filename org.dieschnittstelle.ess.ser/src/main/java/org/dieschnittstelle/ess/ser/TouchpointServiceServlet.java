@@ -85,6 +85,7 @@ public class TouchpointServiceServlet extends HttpServlet {
 		
 			// ... and write the object to the stream
 			responseBodyConverter.writeObject(tp);
+			responseBodyConverter.close();
 		
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -109,15 +110,21 @@ public class TouchpointServiceServlet extends HttpServlet {
 			// identify the touchpoint that should be deleted
 			Long touchpointID = Long.parseLong(request.getPathInfo().substring(1));
 
-			// Delete touchpoint in DB
-			exec.deleteTouchpoint(touchpointID);
+			show("received delete request for: %d", touchpointID);
 
-			// set the response status as successful, using the appropriate
-			// constant from HttpServletResponse
-			response.setStatus(HttpServletResponse.SC_OK);
+			// Delete touchpoint in DB
+			boolean wasDeleted = exec.deleteTouchpoint(touchpointID);
+
+			if (wasDeleted) {
+				// set the response status as successful, using the appropriate
+				// constant from HttpServletResponse
+				response.setStatus(HttpServletResponse.SC_OK);
+			} else {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}
 
 		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			throw new RuntimeException(e);
 		}
 

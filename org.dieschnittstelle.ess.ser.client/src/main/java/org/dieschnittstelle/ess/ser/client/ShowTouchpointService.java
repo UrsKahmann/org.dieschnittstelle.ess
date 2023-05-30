@@ -259,6 +259,7 @@ public class ShowTouchpointService {
 
 				// read the touchpoint object from the input stream
 				AbstractTouchpoint receivedTp = (AbstractTouchpoint) responseBodyConverter.readObject();
+				responseBodyConverter.close();
 
 				// return the object that you have read from the response
 				return receivedTp;
