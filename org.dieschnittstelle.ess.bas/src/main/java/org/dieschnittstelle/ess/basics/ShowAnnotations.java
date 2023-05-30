@@ -47,16 +47,13 @@ public class ShowAnnotations {
 
 		String className = instance.getClass().getSimpleName();
 		String attributesString = Arrays.stream(instance.getClass().getDeclaredFields()).map( field -> {
+			// Get name of field from annotation if present, otherwise the normal field name
 			String fieldName = field.getName();
-			String displayName = fieldName;
-			DisplayAs displayAsAnnotation = field.getAnnotation(DisplayAs.class);
-
-			if (displayAsAnnotation != null) {
-				displayName = displayAsAnnotation.value();
-			}
-
+			String displayName = field.isAnnotationPresent(DisplayAs.class) ? field.getAnnotation(DisplayAs.class).value() : fieldName;
 			String getterName = ReflectedStockItemBuilder.getAccessorNameForField("get", fieldName);
+
 			try {
+				// Get the getter by name and invoke it to get the actual value of the field
 				Method getter = instance.getClass().getDeclaredMethod(getterName);
 				String value = getter.invoke(instance).toString();
 				return displayName + ":" + value + ", ";
