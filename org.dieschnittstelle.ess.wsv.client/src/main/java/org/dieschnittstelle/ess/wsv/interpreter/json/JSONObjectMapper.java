@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.logging.log4j.Logger;
 
+import static org.dieschnittstelle.ess.utils.Utils.show;
+
 /**
  * 
  * CAUTION: THIS IS A RATHER QUICK&DIRTY SOLUTION... !!!
@@ -209,24 +211,30 @@ public class JSONObjectMapper {
 				// hence we cast the type argument to class
 
 				// create a new instance of the class
-				Object obj = null;
+				Object obj;
+				Class klass;
 
 				// check whether we have an abstract class that has jsontype
 				// info present
-				if (Modifier.isAbstract(((Class) type).getModifiers())) {
+				if (Modifier.isAbstract(((Class<?>) type).getModifiers())) {
 					// TODO: include a handling for abstract classes considering
 					// the JsonTypeInfo annotation that might be set on type
-					throw new ObjectMappingException(
-							"cannot instantiate abstract class: " + type);
+					String className = json.get("@class").asText();
+					show("Class: %s", className);
+					klass = Class.forName(className);
 				} else {
-					obj = ((Class) type).newInstance();
+					klass = (Class) type;
 				}
+
+				obj = klass.newInstance();
+				show("Object type: %s", obj.getClass());
 
 				// iterate over the fields in the json object and invoke the
 				// corresponding setter on the instance
 				for (Iterator<String> it = ((ObjectNode) json).fieldNames(); it
 						.hasNext();) {
 					String currentJsonField = it.next();
+					show("Current JSON FIELD: %s", currentJsonField);
 
 					// we exclude the meta field @class here
 					if (!currentJsonField.startsWith("@")) {
@@ -235,7 +243,7 @@ public class JSONObjectMapper {
 								.substring(0, 1).toUpperCase()
 								+ currentJsonField.substring(1);
 						// get the getter and determine its return type
-						Method currentBeanFieldGetter = ((Class) type)
+						Method currentBeanFieldGetter = klass
 								.getMethod("get" + capitalisedFieldname,
 										new Class[] {});
 						Class currentBeanFieldClass = currentBeanFieldGetter
@@ -260,7 +268,7 @@ public class JSONObjectMapper {
 
 							try {
 								// invoke the setter method
-								Method currentBeanFieldSetter = ((Class) type)
+								Method currentBeanFieldSetter = klass
 										.getMethod(
 												"set" + capitalisedFieldname,
 												new Class[] { currentBeanFieldClass });
@@ -285,7 +293,7 @@ public class JSONObjectMapper {
 										// determine the class of the element
 										Object firstElement = valueit.next();
 										// we will add element-by-element
-										Method currentBeanFieldAdder = ((Class) type)
+										Method currentBeanFieldAdder = klass
 												.getMethod(
 														"add"
 																+ capitalisedFieldname
